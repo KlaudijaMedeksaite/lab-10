@@ -69,3 +69,4 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 "# React_Lab_2" 
 "# React_Lab_3" 
 "# React_Lab_3" 
+"# This is Lab 7" 
