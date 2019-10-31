@@ -4,8 +4,9 @@ const port = 4000
 
 const path = require('path');
 const bodyParser = require('body-parser');
-
+const mongoose = require('mongoose');
 const cors = require('cors');
+
 app.use(cors());
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -18,13 +19,28 @@ app.use(function(req, res, next) {
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
+const mongoDB = 'mongodb+srv://admin:admin@cluster0-ovc2j.mongodb.net/test?retryWrites=true&w=majority';
+mongoose.connect(mongoDB, {useNewUrlParser:true});
+
+const Schema = mongoose.Schema;
+const movieSchema = new Schema({
+    title:String,
+    year:String,
+    poster:String
+});
+const movieModel = mongoose.model('movies', movieSchema);
+
+
 app.post('/api/movies', (req,res)=>{
     console.log(req.body);
-    console.log(req.body.title);
-    console.log(req.body.year);
-    console.log(req.body.poster);
+    
+    movieModel.create({
+        title:req.body.title,
+        year:req.body.year,
+        poster:req.body.poster
+    })
+    
     res.json('Data uploaded');
-
 });
 
 app.get('/', (req,res) => {
@@ -37,8 +53,21 @@ app.get('/hello/:name', (req,res)=>{
     console.log(req.params.name);
     res.send('Hello ' + req.params.name);
 })
+
+app.get('/api/movies/:id',(req,res)=>{
+    console.log(req.params.id);
+
+    movieModel.findById(req.params.id, (error,data)=>{
+        res.json(data);
+    })
+})
+
 app.get('/api/movies',(req,res) =>{
-    const myMovies = [
+    movieModel.find((error, data) => {
+        res.json({movies:data});
+    })
+})
+    /*const myMovies = [
         {
         "Title":"Avengers: Infinity War",
         "Year":"2018",
@@ -54,7 +83,7 @@ app.get('/api/movies',(req,res) =>{
 })
 app.get('/test', (req,res)=>{
     res.sendFile(path.join(__dirname+'/index.html'));
-})
+})*/
 app.get('/name', (req,res)=>{
     console.log(req.query.firstname, req.query.lastname);
     res.send('welcome to names, '+ req.query.firstname + " " + req.query.lastname);

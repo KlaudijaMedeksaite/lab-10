@@ -6,9 +6,7 @@ import axios from 'axios';
 class Read extends React.Component {
  
     state = {
-        movies:
-        [
-        ]
+        movies:[]
             
     };
   
