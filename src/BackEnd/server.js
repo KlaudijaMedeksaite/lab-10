@@ -90,6 +90,14 @@ app.get('/name', (req,res)=>{
 })
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
+app.delete('/api/movies/:id', (req, res)=>{
+    console.log(req.params.id);
+    movieModel.deleteOne({_id: req.params.id}, 
+        (error, data)=>{
+            res.json(data);
+        });
+});
+
 app.post('/name', (req,res) =>{
     console.log(req.body.firstname, req.body.lastname);
     res.send('post received ' + req.body.firstname + " " + req.body.lastname);
