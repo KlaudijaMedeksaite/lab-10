@@ -30,7 +30,6 @@ class Create extends React.Component {
   }
 
   handleSubmit(e){
-    alert(this.state.Title + "      " + this.state.Year + "       " + this.state.Poster);
     e.preventDefault();
     const movieObject = {
       title : this.state.Title,
@@ -38,7 +37,7 @@ class Create extends React.Component {
       poster: this.state.Poster
     }
 
-    axios.post('http://localhost:4000/api/movies', movieObject)
+    axios.post('http://localhost:4000/api/movies/', movieObject)
     .then()
     .catch();
     this.setState({Title:'',Year:'', Poster:''})

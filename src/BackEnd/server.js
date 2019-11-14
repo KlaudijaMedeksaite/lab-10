@@ -102,3 +102,21 @@ app.post('/name', (req,res) =>{
     console.log(req.body.firstname, req.body.lastname);
     res.send('post received ' + req.body.firstname + " " + req.body.lastname);
 })
+
+app.put('/api/movies/:id', (req,res)=>{
+    console.log("Edit: " + req.params.id);
+    console.log(req.body);
+    movieModel.findByIdAndUpdate(req.params.id,
+        req.body,
+        {new:true},
+        (error,data)=>{
+            res.json(data);
+        })
+})
+
+app.get('/api/movies/:id', (req,res)=>{
+    console.log("Get: " + req.params.id);
+    movieModel.findById(req.params.id, (error,data)=>{
+        res.json(data);
+    });
+})
